@@ -11,3 +11,7 @@ const genDiffTest = (first, second, filename) => {
 it('Test genDiff with json', () => {
   genDiffTest('before.json', 'after.json', 'gendiffAnswer.txt');
 });
+
+it('Test genDiff with yml', () => {
+  genDiffTest('before.yml', 'after.yml', 'gendiffAnswer.txt');
+});
