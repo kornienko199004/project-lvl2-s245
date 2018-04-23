@@ -8,23 +8,20 @@ export default (first, second) => {
   const file2 = fs.readFileSync(second, 'utf-8');
   const extName1 = path.extname(first);
   const extName2 = path.extname(second);
-  const parserer1 = getParser(extName1);
-  const parserer2 = getParser(extName2);
+  const parse1 = getParser(extName1);
+  const parse2 = getParser(extName2);
 
-  const obj1 = parserer1(file1);
-  const obj2 = parserer2(file2);
+  const obj1 = parse1(file1);
+  const obj2 = parse2(file2);
 
   const result = _.union(Object.keys(obj1), Object.keys(obj2))
     .map((key) => {
-      let value;
       if (_.has(obj1, key) && _.has(obj2, key)) {
-        value = obj1[key] === obj2[key] ? ` ${key}: ${obj1[key]} \n` : `+${key}: ${obj2[key]} \n-${key}: ${obj1[key]} \n`;
+        return obj1[key] === obj2[key] ? ` ${key}: ${obj1[key]}` : [`+${key}: ${obj2[key]}`, `-${key}: ${obj1[key]}`];
       } else if (!_.has(obj1, key) && _.has(obj2, key)) {
-        value = `+${key}: ${obj2[key]} \n`;
-      } else {
-        value = `-${key}: ${obj1[key]} \n`;
+        return `+${key}: ${obj2[key]}`;
       }
-      return value;
-    }).join('');
-  return `{ \n${result} }`;
+      return `-${key}: ${obj1[key]}`;
+    });
+  return `{\n${_.flatten(result).join('\n')}\n}`;
 };
