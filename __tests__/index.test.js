@@ -15,3 +15,7 @@ it('Test genDiff with json', () => {
 it('Test genDiff with yml', () => {
   genDiffTest('before.yml', 'after.yml', 'gendiffAnswer.txt');
 });
+
+it('Test genDiff with ini', () => {
+  genDiffTest('before.ini', 'after.ini', 'gendiffAnswer.txt');
+});
