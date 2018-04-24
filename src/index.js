@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import _ from 'lodash';
 import getParser from './parser';
+import render from './render';
+import parseAst from './parserAst';
 
 export default (first, second) => {
   const file1 = fs.readFileSync(first, 'utf-8');
@@ -13,15 +14,5 @@ export default (first, second) => {
 
   const obj1 = parse1(file1);
   const obj2 = parse2(file2);
-
-  const result = _.union(Object.keys(obj1), Object.keys(obj2))
-    .map((key) => {
-      if (_.has(obj1, key) && _.has(obj2, key)) {
-        return obj1[key] === obj2[key] ? ` ${key}: ${obj1[key]}` : [`+${key}: ${obj2[key]}`, `-${key}: ${obj1[key]}`];
-      } else if (!_.has(obj1, key) && _.has(obj2, key)) {
-        return `+${key}: ${obj2[key]}`;
-      }
-      return `-${key}: ${obj1[key]}`;
-    });
-  return `{\n${_.flatten(result).join('\n')}\n}`;
+  return `{\n${render(parseAst(obj1, obj2)).join('\n')}\n}`;
 };

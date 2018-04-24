@@ -19,3 +19,15 @@ it('Test genDiff with yml', () => {
 it('Test genDiff with ini', () => {
   genDiffTest('before.ini', 'after.ini', 'gendiffAnswer.txt');
 });
+
+it('Test genDiff with json Ast', () => {
+  genDiffTest('beforeAst.json', 'afterAst.json', 'gendiffAnswerAst.txt');
+});
+
+it('Test genDiff with yml Ast', () => {
+  genDiffTest('beforeAst.yml', 'afterAst.yml', 'gendiffAnswerAst.txt');
+});
+
+it('Test genDiff with ini Ast', () => {
+  genDiffTest('beforeAst.ini', 'afterAst.ini', 'gendiffAnswerAst.txt');
+});
