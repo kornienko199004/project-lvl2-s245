@@ -5,7 +5,7 @@ import genDiff from '..';
 
 program
   .option('-V, --version', 'output the version number')
-  .option('-f, --format [type]', 'Output format', 'simple')
+  .option('-f, --format [type]', 'Output format', /^(simple|plain|json)$/i, 'simple')
   .arguments('<firstConfig> <secondConfig>')
   .description('Compares two configuration files and shows a difference.')
   .action((first, second) => {

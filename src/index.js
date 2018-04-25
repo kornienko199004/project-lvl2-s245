@@ -14,6 +14,9 @@ export default (first, second, format) => {
   const obj1 = parse1(file1);
   const obj2 = parse2(file2);
   const render = getRender(format);
-  const renderOutput = render(parseAst(obj1, obj2)).join('\n');
-  return format === 'simple' ? `{\n${renderOutput}\n}` : `${renderOutput}`;
+  const renderOutput = render(parseAst(obj1, obj2));
+  if (format === 'json') {
+    return renderOutput;
+  }
+  return format === 'simple' ? `{\n${renderOutput.join('\n')}\n}` : `${renderOutput.join('\n')}`;
 };
