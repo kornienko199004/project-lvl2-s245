@@ -1,25 +1,10 @@
-const transformValue = (v) => {
-  const output = v instanceof Object ? `{\n${Object.keys(v).reduce((acc, key) => `${acc} ${key}: ${v[key]}\n`, '')} }` : v;
-  return output;
+import { renderSimpleAst, renderPlainAst } from './rendersList';
+
+const renderList = {
+  simple: renderSimpleAst,
+  plain: renderPlainAst,
 };
-
-const renderAst = ast =>
-  ast.map(({
-    name, value, oldValue, type, children,
-  }) => {
-    if (children) {
-      return `${name}: {\n${renderAst(children).join('\n')}\n}`;
-    }
-    const transformedValue = transformValue(value);
-    const transformedOldValue = transformValue(oldValue);
-
-    const strList = {
-      changed: `+${name}: ${transformedOldValue}\n-${name}: ${transformedValue}`,
-      added: `+${name}: ${transformedValue}`,
-      removed: `-${name}: ${transformedValue}`,
-      unchanged: ` ${name}: ${transformedValue}`,
-    };
-    return strList[type];
-  });
-
-export default renderAst;
+export default format => (ast) => {
+  const render = renderList[format];
+  return render(ast);
+};
