@@ -1,4 +1,4 @@
-import { renderSimpleAst, renderPlainAst } from './rendersList';
+import { renderSimpleAst, renderPlainAst } from './renders';
 
 const renderList = {
   simple: renderSimpleAst,

@@ -9,19 +9,19 @@ const parseAst = (data1, data2) => {
         }];
       } else if (data1[key] === data2[key]) {
         return [...acc, {
-          name: key, newValue: '', oldValue: data1[key], type: 'unchanged', children: [],
+          name: key, newValue: '', oldValue: data1[key], type: 'unchanged',
         }];
       }
       return [...acc, {
-        name: key, newValue: data1[key], oldValue: data2[key], type: 'changed', children: [],
+        name: key, newValue: data1[key], oldValue: data2[key], type: 'changed',
       }];
     } else if (!_.has(data1, key)) {
       return [...acc, {
-        name: key, newValue: data2[key], oldValue: '', type: 'added', children: [],
+        name: key, newValue: data2[key], oldValue: '', type: 'added',
       }];
     }
     return [...acc, {
-      name: key, newValue: data1[key], oldValue: '', type: 'removed', children: [],
+      name: key, newValue: data1[key], oldValue: '', type: 'removed',
     }];
   }, []);
   return ast;
