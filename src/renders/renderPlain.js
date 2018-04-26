@@ -7,12 +7,14 @@ const transformValue = (v) => {
 
 const renderPlainAst = (ast) => {
   const renderIter = (data, path = '') =>
-    data.map(({
+    data
+    .filter(({
+      name, newValue, oldValue, type, children = [],
+    }) => type !== 'unchanged')
+
+    .map(({
       name, newValue, oldValue, type, children = [],
     }) => {
-      if (type === 'unchanged') {
-        return '';
-      }
       const transformedValue = transformValue(newValue);
       const transformedOldValue = transformValue(oldValue);
 
@@ -23,8 +25,7 @@ const renderPlainAst = (ast) => {
         removed: `Property '${path}${name}' was removed`,
       };
       return strList[type];
-    })
-      .filter(e => e !== '');
+    });
   return `${renderIter(ast).join('\n')}`;
 };
 

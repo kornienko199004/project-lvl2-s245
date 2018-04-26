@@ -5,7 +5,7 @@ const parseAst = (data1, data2) => {
     if (_.has(data1, key) && _.has(data2, key)) {
       if (data1[key] instanceof Object && data2[key] instanceof Object) {
         return [...acc, {
-          name: key, value: '', oldValue: '', type: 'root', children: parseAst(data1[key], data2[key]),
+          name: key, newValue: '', oldValue: '', type: 'root', children: parseAst(data1[key], data2[key]),
         }];
       } else if (data1[key] === data2[key]) {
         return [...acc, {
