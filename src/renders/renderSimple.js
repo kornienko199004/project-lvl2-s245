@@ -8,21 +8,24 @@ const transformValue = (v) => {
 };
 
 const renderSimpleAst = (ast) => {
-  const result = ast.map(({
-    name, newValue, oldValue, type, children = [],
-  }) => {
-    const transformedValue = transformValue(newValue);
-    const transformedOldValue = transformValue(oldValue);
-    const strList = {
-      root: `${name}: {\n${renderSimpleAst(children).join('\n')}\n}`,
-      changed: [`+${name}: ${transformedOldValue}`, `-${name}: ${transformedValue}`],
-      added: `+${name}: ${transformedValue}`,
-      removed: `-${name}: ${transformedValue}`,
-      unchanged: ` ${name}: ${transformedOldValue}`,
-    };
-    return strList[type];
-  });
-  return _.flatten(result);
+  const renderIter = (data) => {
+    const result = data.map(({
+      name, newValue, oldValue, type, children = [],
+    }) => {
+      const transformedValue = transformValue(newValue);
+      const transformedOldValue = transformValue(oldValue);
+      const strList = {
+        root: `${name}: {\n${renderIter(children).join('\n')}\n}`,
+        changed: [`+${name}: ${transformedOldValue}`, `-${name}: ${transformedValue}`],
+        added: `+${name}: ${transformedValue}`,
+        removed: `-${name}: ${transformedValue}`,
+        unchanged: ` ${name}: ${transformedOldValue}`,
+      };
+      return strList[type];
+    });
+    return _.flatten(result);
+  };
+  return `{\n${renderIter(ast).join('\n')}\n}`;
 };
 
 export default renderSimpleAst;

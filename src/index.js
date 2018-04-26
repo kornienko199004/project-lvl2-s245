@@ -14,12 +14,5 @@ export default (first, second, format) => {
   const obj1 = parse1(file1);
   const obj2 = parse2(file2);
   const render = getRender(format);
-  const renderOutput = render(parseAst(obj1, obj2));
-
-  const visualPresentation = {
-    simple: arg => `{\n${arg.join('\n')}\n}`,
-    plain: arg => `${arg.join('\n')}`,
-    json: arg => arg,
-  };
-  return visualPresentation[format](renderOutput);
+  return render(parseAst(obj1, obj2));
 };
