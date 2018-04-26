@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import getParser from './parser';
-import getRender from './render';
+import getRender from './renders';
 import parseAst from './parserAst';
 
 export default (first, second, format) => {
@@ -16,10 +16,10 @@ export default (first, second, format) => {
   const render = getRender(format);
   const renderOutput = render(parseAst(obj1, obj2));
 
-  const typesList = {
+  const visualPresentation = {
     simple: arg => `{\n${arg.join('\n')}\n}`,
     plain: arg => `${arg.join('\n')}`,
     json: arg => arg,
   };
-  return typesList[format](renderOutput);
+  return visualPresentation[format](renderOutput);
 };
