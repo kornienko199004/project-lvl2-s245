@@ -1,31 +1,31 @@
 import _ from 'lodash';
 
-const transformValue = (v) => {
+const space = number => ' '.repeat(number);
+const transformValue = v => (number) => {
   if (!(v instanceof Object)) {
     return v;
   }
-  return `{\n${Object.keys(v).reduce((acc, key) => `${acc} ${key}: ${v[key]}\n`, '')} }`;
+  return `{\n${Object.keys(v).reduce((acc, key) => `${acc}${space(number + 4)}${key}: ${v[key]}\n`, '')}${space(number)}}`;
 };
-
 const renderSimpleAst = (ast) => {
-  const renderIter = (data) => {
+  const renderIter = (data, num) => {
     const result = data.map(({
       name, newValue, oldValue, type, children = [],
     }) => {
-      const transformedValue = transformValue(newValue);
-      const transformedOldValue = transformValue(oldValue);
+      const transformedValue = transformValue(newValue)(num);
+      const transformedOldValue = transformValue(oldValue)(num);
       const strList = {
-        root: `${name}: {\n${renderIter(children).join('\n')}\n}`,
-        changed: [`+${name}: ${transformedOldValue}`, `-${name}: ${transformedValue}`],
-        added: `+${name}: ${transformedValue}`,
-        removed: `-${name}: ${transformedValue}`,
-        unchanged: ` ${name}: ${transformedOldValue}`,
+        root: `${space(num)}${name}: {\n${renderIter(children, num + 4).join('\n')}\n${space(num)}}`,
+        changed: [`${space(num - 2)}+ ${name}: ${transformedOldValue}`, `${space(num - 2)}- ${name}: ${transformedValue}`],
+        added: `${space(num - 2)}+ ${name}: ${transformedValue}`,
+        removed: `${space(num - 2)}- ${name}: ${transformedValue}`,
+        unchanged: `${space(num - 2)}  ${name}: ${transformedOldValue}`,
       };
       return strList[type];
     });
     return _.flatten(result);
   };
-  return `{\n${renderIter(ast).join('\n')}\n}`;
+  return `{\n${renderIter(ast, 4).join('\n')}\n}`;
 };
 
 export default renderSimpleAst;
